@@ -98,7 +98,7 @@ function evolve_replicates!(pop::Population, rp::RunParams)
     rps = [deepcopy(rp) for r in 1:rp.nreps]
 
     prog = Progress(rp.nreps*rp.nepochs*rp.nsteps, desc="replicate...", barlen=80, color=:color_normal, start=rp.nreps*rp.nepochs*rp.nsteps)
-    for r in 1:rp.nreps
+    Threads.@threads for r in 1:rp.nreps
         # run replicate
         pops[r].status.rep = r
         evolve_epochs!(pops[r], rps[r], prog)
